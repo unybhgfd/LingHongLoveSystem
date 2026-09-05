@@ -1,0 +1,10 @@
+name: LingHongLoveSystem
+version: ${project.version}
+author: unybhgfd
+description: A generic Slimefun4-Addon
+website: https://github.com/Slimefun/Addon-Template
+
+main: me.CHANGEME.slimefunaddon.SlimefunAddon
+depend: [Slimefun]
+
+api-version: 1.14
