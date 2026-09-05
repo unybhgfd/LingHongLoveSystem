@@ -5,14 +5,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-public final class PlayerDataChangeEvent extends PlayerEvent {
+public final class PlayerDataChangeEvent<T> extends PlayerEvent {
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final PlayerDataKey key;
-    private final String oldValue;
-    private final String newValue;
+    private final T oldValue;
+    private final T newValue;
 
-    public PlayerDataChangeEvent(Player player, PlayerDataKey key, String oldValue, String newValue) {
+    public PlayerDataChangeEvent(Player player, PlayerDataKey key, T oldValue, T newValue) {
         super(player);
         this.key = key;
         this.oldValue = oldValue;
@@ -23,11 +23,11 @@ public final class PlayerDataChangeEvent extends PlayerEvent {
         return key;
     }
 
-    public String getOldValue() {
+    public T getOldValue() {
         return oldValue;
     }
 
-    public String getNewValue() {
+    public T getNewValue() {
         return newValue;
     }
 

@@ -1,8 +1,8 @@
 package io.github.yourname.playerdataaddon.api;
 
 public enum PlayerDataKey {
-    DATA1("data1"),
-    DATA2("data2");
+    HValue("hvalue"), // 0 ~ 1000
+    LastTop("lasttop");
 
     private final String id;
 

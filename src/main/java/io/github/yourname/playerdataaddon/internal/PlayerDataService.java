@@ -15,59 +15,57 @@ import java.util.Map;
 import java.util.Objects;
 
 public final class PlayerDataService implements PlayerDataApi {
-    private final BroadcastManager broadcastManager;
     private final Map<PlayerDataKey, NamespacedKey> keys = new EnumMap<PlayerDataKey, NamespacedKey>(PlayerDataKey.class);
 
     public PlayerDataService(PlayerDataAddon plugin) {
-        this.broadcastManager = new BroadcastManager(plugin);
         for (PlayerDataKey key : PlayerDataKey.values()) {
             keys.put(key, new NamespacedKey(plugin, key.getId()));
         }
     }
 
     @Override
-    public String get(Player player, PlayerDataKey key) {
+    public <T> T get(Player player, PlayerDataKey key, PersistentDataType<T, T> type, T defaultValue) {
         Objects.requireNonNull(player, "player");
         Objects.requireNonNull(key, "key");
-        return container(player).get(namespacedKey(key), PersistentDataType.STRING);
+        Objects.requireNonNull(defaultValue, "defaultValue");
+        T value = container(player).get(namespacedKey(key), type);
+        return value != null ? value : defaultValue;
     }
 
     @Override
-    public boolean set(Player player, PlayerDataKey key, String value) {
+    public <T> boolean set(Player player, PlayerDataKey key, T value, PersistentDataType<T, T> type) {
         Objects.requireNonNull(player, "player");
         Objects.requireNonNull(key, "key");
         Objects.requireNonNull(value, "value");
         ensureMainThread();
 
         PersistentDataContainer container = container(player);
-        String oldValue = container.get(namespacedKey(key), PersistentDataType.STRING);
+        T oldValue = container.get(namespacedKey(key), type);
 
         if (Objects.equals(oldValue, value)) {
             return false;
         }
 
-        container.set(namespacedKey(key), PersistentDataType.STRING, value);
-        Bukkit.getPluginManager().callEvent(new PlayerDataChangeEvent(player, key, oldValue, value));
-        broadcastManager.broadcast(player, key, oldValue, value);
+        container.set(namespacedKey(key), type, value);
+        Bukkit.getPluginManager().callEvent(new PlayerDataChangeEvent<>(player, key, oldValue, value));
         return true;
     }
 
     @Override
-    public boolean clear(Player player, PlayerDataKey key) {
+    public <T> boolean clear(Player player, PlayerDataKey key, PersistentDataType<T, T> type) {
         Objects.requireNonNull(player, "player");
         Objects.requireNonNull(key, "key");
         ensureMainThread();
 
         PersistentDataContainer container = container(player);
-        String oldValue = container.get(namespacedKey(key), PersistentDataType.STRING);
+        T oldValue = container.get(namespacedKey(key), type);
 
         if (oldValue == null) {
             return false;
         }
 
         container.remove(namespacedKey(key));
-        Bukkit.getPluginManager().callEvent(new PlayerDataChangeEvent(player, key, oldValue, null));
-        broadcastManager.broadcast(player, key, oldValue, null);
+        Bukkit.getPluginManager().callEvent(new PlayerDataChangeEvent<>(player, key, oldValue, null));
         return true;
     }
 
