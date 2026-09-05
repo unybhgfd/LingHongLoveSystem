@@ -1,10 +1,8 @@
-name: LingHongLoveSystem
+name: PlayerDataAddon
+author: yourname
+description: Slimefun addon with per-player data1/data2 variables and public hook API
+main: io.github.yourname.playerdataaddon.PlayerDataAddon
 version: ${project.version}
-author: unybhgfd
-description: A generic Slimefun4-Addon
-website: https://github.com/Slimefun/Addon-Template
-
-main: me.CHANGEME.slimefunaddon.SlimefunAddon
-depend: [Slimefun]
-
 api-version: 1.14
+depend:
+  - Slimefun

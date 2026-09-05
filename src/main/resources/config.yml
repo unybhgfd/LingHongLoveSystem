@@ -1,0 +1,6 @@
+broadcast:
+  enabled: true
+  messages:
+    - "&7[&b%player%&7] 的 &e%variable% &7更改了：&f%old% &7→ &a%new%"
+    - "&b[%player%]&f 的 %variable% 更新了：&7%old% &f→ &a%new%"
+    - "&e[%player%]&f 的 %variable% 发生变化：&7%old% &f→ &b%new%"
